@@ -1,3 +1,8 @@
+## Running the App
+1) Initialize MongoDB Server
+2) mern-todo-app\backend>nodemon server
+3) mern-todo-app>npm start
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
