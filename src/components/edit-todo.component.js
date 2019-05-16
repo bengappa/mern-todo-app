@@ -7,12 +7,17 @@ export default class EditTodo extends Component {
     constructor(props) {
         super(props);
 
-        this.onChangeTodoDescription = this.onChangeTodoDescription.bind(this);
+        /*
+         Instead of binding these functions, you can use the below notation for onChangeTodoDescription
+         */
         this.onChangeTodoResponsible = this.onChangeTodoResponsible.bind(this);
         this.onChangeTodoPriority = this.onChangeTodoPriority.bind(this);
         this.onChangeTodoCompleted = this.onChangeTodoCompleted.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
+        /*
+         Don't use snakecase in JavaScript. Use camelcase.
+         */
         this.state = {
             todo_description: '',
             todo_responsible: '',
@@ -38,12 +43,10 @@ export default class EditTodo extends Component {
         })
     }
 
-    // Add appropriate methods for updating data
-    onChangeTodoDescription(e) {
-        this.setState({
-            todo_description: e.target.value
-        });
-    }
+    /*
+     Better notation for functions that need to access "this".
+     */
+    onChangeTodoDescription = (e) => this.setState({ todo_description: e.target.value });
 
     onChangeTodoResponsible(e) {
         this.setState({
@@ -72,10 +75,12 @@ export default class EditTodo extends Component {
             todo_priority: this.state.todo_priority,
             todo_completed: this.state.todo_completed
         };
-        axios.post('http://localhost:4000/todos/update/' + this.props.match.params.id, obj)
-            .then(res => console.log(res.data));
+        /*
+         Switched to PUT request
+         */
+        axios.put('http://localhost:4000/todos/' + this.props.match.params.id, obj)
+            .then(res => this.props.history.push('/'));
 
-        this.props.history.push('/');
     }
 
     // JSX Output

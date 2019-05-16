@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import axios from 'axios';
 
 // Todo Component - list a table row
-const Todo = props => (
+/*
+ Use can use "destructuring" in the function arguments to make this cleaner.
+ */
+const Todo = ({ todo }) => (
     <tr>
-        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_description}</td>
-        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_responsible}</td>
-        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_priority}</td>
+        <td className={todo.todo_completed ? 'completed' : ''}>{todo.todo_description}</td>
+        <td className={todo.todo_completed ? 'completed' : ''}>{todo.todo_responsible}</td>
+        <td className={todo.todo_completed ? 'completed' : ''}>{todo.todo_priority}</td>
         <td>
-            <Link to={"/edit/"+props.todo._id}>Edit</Link>
+            {/* Use "string templating" when interpolating JavaScript values into a string body. */}
+            <Link to={`/edit/${todo._id}`}>Edit</Link>
         </td>
     </tr>
 )
@@ -26,21 +30,33 @@ export default class TodosList extends Component {
             .then(response => {
                 this.setState({todos: response.data})
             })
+            /*
+             Don't use the keyword 'function' in 2019. Just use the fat arrow notation like you're doing above.
+             */
             .catch(function (error) {
                 console.log(error);
             })
     }
 
     componentDidUpdate() {
-        axios.get('http://localhost:4000/todos')
-            .then(response => {
-                this.setState({ todos: response.data })
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        /*
+         Don't ever set state in componentDidUpdate, unless you're super sure you know you want to do it there. Setting
+         the state triggers an update on your component, which invokes guess which function? componentDidUpdate. So
+         it'll create an infinite loop. Uncomment this code and check your network tab in your browser to see what this
+         is bad.
+         */
+        // axios.get('http://localhost:4000/todos')
+        //     .then(response => {
+        //         this.setState({ todos: response.data })
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     })
     }
 
+    /*
+     Not necessary. This can be in your render method.
+     */
     todoList() {
         return this.state.todos.map(function (currentTodo, i) {
             return <Todo todo={currentTodo} key={i} />;
@@ -62,7 +78,7 @@ export default class TodosList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.todoList() }
+                        {this.state.todos.map((currentTodo, i)  => <Todo todo={currentTodo} key={i} />)}
                     </tbody>
                 </table>
             </div>

@@ -26,6 +26,13 @@ connection.once('open', function () {
         * Below we're attaching each endpoint
 */
 
+/*
+ In the world of RESTful conventions, the action you taking on a particular record is implied by the HTTP verb you're
+ using. If you're POST'ing to /todos/, it is implied that you're making a new record. If you're PUT'ing to /todos/:id,
+ it is implied that you're updating the record. This way you keep your URLs clear and standardized and the end user can
+ follow the conventions to integrate with you API without needing to guess what the URL structure is.
+ */
+
 // First Endpoint - GET at Default address
 todoRoutes.route('/').get(function (req, res) {
     Todo.find(function (err, todos) {
@@ -46,6 +53,9 @@ todoRoutes.route('/:id').get(function (req, res) {
 });
 
 // Third Endpoint - Adding HTTP requests to the Database
+/*
+ This should just be POST /todos/
+ */
 todoRoutes.route('/add').post(function (req, res) {
     let todo = new Todo(req.body);
     todo.save()
@@ -58,18 +68,26 @@ todoRoutes.route('/add').post(function (req, res) {
 })
 
 // Fourth Endpoint - Editing existing endpoints, also with a parameter
-todoRoutes.route('/update/:id').post(function (req, res) {
-    Todo.findById(req.params.id, function (err, todo) {
-        if (!todo)
+/*
+ Changed to a PUT /todos/:id to follow convention.
+ */
+todoRoutes.route('/:id').put((req, res) => {
+    Todo.findById(req.params.id, (err, todo) => {
+        /*
+         One of the greatest, simplest tricks to cleaning up code in any language it the "early return".
+         */
+        if (!todo) {
             res.status(404).send('data is not found');
-        else
-            todo.todo_description = req.body.todo_description;
+            return;
+        }
+
+        todo.todo_description = req.body.todo_description;
         todo.todo_responsible = req.body.todo_responsible;
         todo.todo_priority = req.body.todo_priority;
         todo.todo_completed = req.body.todo_completed;
-
+        
         todo.save().then(todo => {
-            res.json('Todo updated');
+                res.json('Todo updated');
         })
             .catch(err => {
                 res.status(400).send('Update not possible');

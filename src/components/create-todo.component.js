@@ -3,57 +3,33 @@ import axios from 'axios';
 
 export default class CreateTodo extends Component {
 
-    // React is component-based; here we call the component
-    //      props/super props here are to set initial state
-    constructor(props) {
-        super(props);
+    /*
+     With declaring the default state in the body of the class, you get a much cleaner syntax and you don't need a
+     constructor. You also can change the notation of your functions to avoid all the binding, which is actually bad to
+     do because it means that every time you instantiate the component you create like 4 new functions.
+     */
 
-        // These give this constructor access to the methods below
-        this.onChangeTodoDescription = this.onChangeTodoDescription.bind(this);
-        this.onChangeTodoResponsible = this.onChangeTodoResponsible.bind(this);
-        this.onChangeTodoPriority = this.onChangeTodoPriority.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+    state = {
+        todo_description: '',
+        todo_responsible: '',
+        todo_priority: '',
+        todo_completed: false
+    };
 
+    onChangeTodoDescription = (e) => this.setState({ todo_description: e.target.value });
 
-        this.state = {
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
-        }
-    }
+    onChangeTodoResponsible = (e) => this.setState({ todo_responsible: e.target.value });
 
-    // Each of the methods in the class 
+    onChangeTodoPriority = (e) => this.setState({ todo_priority: e.target.value });
 
-    onChangeTodoDescription(e) {
-        this.setState({
-            todo_description: e.target.value
-        });
-    }
+    onChangeTodoCompleted = (e) => this.setState({ todo_completed: e.target.value });
 
-    onChangeTodoResponsible(e) {
-        this.setState({
-            todo_responsible: e.target.value
-        });
-    }
-
-    onChangeTodoPriority(e) {
-        this.setState({
-            todo_priority: e.target.value
-        });
-    }
-
-    onChangeTodoCompleted(e) {
-        this.setState({
-            todo_completed: e.target.value
-        });
-    }
-
-    onSubmit(e) {
+    onSubmit = (e) => {
         e.preventDefault();
 
-
-
+        /*
+         Nice use of string formatting.
+         */
         // Need ` back tics to use ${} syntax below
         console.log(`Form Submitted:`);
         console.log(`Todo Description: ${this.state.todo_description}`);
@@ -67,21 +43,27 @@ export default class CreateTodo extends Component {
             todo_responsible: this.state.todo_responsible,
             todo_priority: this.state.todo_priority,
             todo_completed: this.state.todo_completed
-        }
+        };
 
         axios.post('http://localhost:4000/todos/add', newTodo)
-            .then(res => console.log(res.data));
+            .then(res => {
+                /*
+                 Only reset the state when you're sure the request has succeeded.
+                 */
+                this.setState({
+                    todo_description: '',
+                    todo_responsible: '',
+                    todo_priority: '',
+                    todo_completed: false
+                });
+                /*
+                 Go back to the index when you're done creating the thing
+                 */
+                this.props.history.push('/');
+            });
 
 
-
-        this.setState({
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
-        })
-
-    }
+    };
 
     render() {
         return (
