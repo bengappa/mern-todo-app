@@ -4,7 +4,11 @@ import axios from 'axios';
 
 // Todo Component - list a table row
 /*
- Use can use "destructuring" in the function arguments to make this cleaner.
+ You can use "destructuring" in the function arguments to make this cleaner.
+
+Also used to be: 
+    const Todo = props => (
+
  */
 const Todo = ({ todo }) => (
     <tr>
@@ -32,10 +36,13 @@ export default class TodosList extends Component {
             })
             /*
              Don't use the keyword 'function' in 2019. Just use the fat arrow notation like you're doing above.
+
+                    .catch(function (error) {
+                                    console.log(error);
+                                })
+
              */
-            .catch(function (error) {
-                console.log(error);
-            })
+            .then(error => console.log(error))
     }
 
     componentDidUpdate() {
@@ -45,23 +52,23 @@ export default class TodosList extends Component {
          it'll create an infinite loop. Uncomment this code and check your network tab in your browser to see what this
          is bad.
          */
-        // axios.get('http://localhost:4000/todos')
-        //     .then(response => {
-        //         this.setState({ todos: response.data })
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     })
+         //axios.get('http://localhost:4000/todos')
+         //    .then(response => {
+         //        this.setState({ todos: response.data })
+         //    })
+         //    .catch(function (error) {
+         //        console.log(error);
+         //    })
     }
 
     /*
      Not necessary. This can be in your render method.
      */
-    todoList() {
-        return this.state.todos.map(function (currentTodo, i) {
-            return <Todo todo={currentTodo} key={i} />;
-        });
-    }
+    //todoList() {
+    //    return this.state.todos.map(function (currentTodo, i) {
+    //        return <Todo todo={currentTodo} key={i} />;
+    //    });
+    //}
 
     // Render in JSX
     render() {

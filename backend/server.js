@@ -32,8 +32,8 @@ connection.once('open', function () {
  */
 
 // First Endpoint - GET at Default address
-todoRoutes.route('/').get(function (req, res) {
-    Todo.find(function (err, todos) {
+todoRoutes.route('/').get((req, res) => {
+    Todo.find((err, todos) => {
         if (err) {
             console.log(err);
         } else {
@@ -43,9 +43,9 @@ todoRoutes.route('/').get(function (req, res) {
 });
 
 // Second Endpoint - GET taking a parameter, retrieve one specific record
-todoRoutes.route('/:id').get(function (req, res) {
+todoRoutes.route('/:id').get((req, res) => {
     let id = req.params.id;
-    Todo.findById(id, function (err, todo) {
+    Todo.findById(id, (err, todo) => {
         res.json(todo);
     });
 });
@@ -53,8 +53,11 @@ todoRoutes.route('/:id').get(function (req, res) {
 // Third Endpoint - Adding HTTP requests to the Database
 /*
  This should just be POST /todos/
+        ^^
+        Tried changing this but ran into some difficulties
+
  */
-todoRoutes.route('/add').post(function (req, res) {
+todoRoutes.route('/add').post((req, res) => {
     let todo = new Todo(req.body);
     todo.save()
         .then(todo => {
@@ -92,6 +95,28 @@ todoRoutes.route('/:id').put((req, res) => {
             });
     });
 });
+
+
+// Adding a Delete route
+todoRoutes.route('/add').delete((req, res) => {
+
+    // Adding early return
+    if (!todo) {
+        res.status(404).send('data is not found');
+        return;
+    }
+
+
+    let todo = new Todo(req.body);
+    todo.save()
+        .then(todo => {
+            res.status(200).json({ 'todo': 'todo added successfully' });
+        })
+        .catch(err => {
+            res.status(400).send('adding new todo failed');
+        })
+})
+
 
 app.use('/todos', todoRoutes);
 

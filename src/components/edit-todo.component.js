@@ -15,6 +15,8 @@ export default class EditTodo extends Component {
 
     /*
         Don't use snakecase in JavaScript. Use camelcase.
+        ^^
+        This one I'm not going to change but rather not use snakecase next time.
         */
     state = {
         todo_description: '',
