@@ -98,24 +98,36 @@ todoRoutes.route('/:id').put((req, res) => {
 
 
 // Adding a Delete route
-todoRoutes.route('/add').delete((req, res) => {
+/*
 
-    // Adding early return
-    if (!todo) {
-        res.status(404).send('data is not found');
-        return;
-    }
+    The Below does not work - Postman returns
+        <body>
+        <pre>Cannot DELETE /todos/delete/5cdb038ced79e63b9032e829</pre>
+        </body>
+
+Read this: https://github.com/axios/axios/issues/897
+Also, the original YouTube video I followed: https://www.youtube.com/watch?v=_02zK1D4brk&list=PLQeNPM60ruK6K2QnBSz2osXrv7sDv2QUi&index=3&t=0s
+
+/*
+
+//todoRoutes.route('/:id').delete((req, res) => {
+
+//    // Adding early return
+//    if (!todo) {
+//        res.status(404).send('data is not found');
+//        return;
+//    }
 
 
-    let todo = new Todo(req.body);
-    todo.save()
-        .then(todo => {
-            res.status(200).json({ 'todo': 'todo added successfully' });
-        })
-        .catch(err => {
-            res.status(400).send('adding new todo failed');
-        })
-})
+//    let todo = new Todo(req.body);
+//    todo.save()
+//        .then(todo => {
+//            res.status(200).json({ 'todo': 'todo added successfully' });
+//        })
+//        .catch(err => {
+//            res.status(400).send('adding new todo failed');
+//        })
+//})
 
 
 app.use('/todos', todoRoutes);
