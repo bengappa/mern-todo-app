@@ -7,6 +7,18 @@ export default class CreateTodo extends Component {
      With declaring the default state in the body of the class, you get a much cleaner syntax and you don't need a
      constructor. You also can change the notation of your functions to avoid all the binding, which is actually bad to
      do because it means that every time you instantiate the component you create like 4 new functions.
+     
+     Used to look like this:
+
+     constructor(props) {
+        super(props);
+     
+        this.onChangeTodoDescription = this.onChangeTodoDescription.bind(this);
+        this.onChangeTodoResponsible = this.onChangeTodoResponsible.bind(this);
+        this.onChangeTodoPriority = this.onChangeTodoPriority.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+     
+     Now, set the initial state then create 4 functions
      */
 
     state = {
@@ -27,10 +39,8 @@ export default class CreateTodo extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        /*
-         Nice use of string formatting.
-         */
-        // Need ` back tics to use ${} syntax below
+
+        // Need ` back tics to use ${} string formatting syntax below
         console.log(`Form Submitted:`);
         console.log(`Todo Description: ${this.state.todo_description}`);
         console.log(`Todo Responsible: ${this.state.todo_responsible}`);
@@ -44,6 +54,10 @@ export default class CreateTodo extends Component {
             todo_priority: this.state.todo_priority,
             todo_completed: this.state.todo_completed
         };
+
+        /*
+            Matt placed setState in a then statement, and added a push to index in there too
+         */
 
         axios.post('http://localhost:4000/todos/add', newTodo)
             .then(res => {

@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\backend",
+    "\\src",
     "\\src\\components"
   ],
-  "SelectedNode": "\\src",
+  "SelectedNode": "\\src\\components\\edit-todo.component.js",
   "PreviewInSolutionExplorer": false
 }

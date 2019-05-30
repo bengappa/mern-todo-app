@@ -3,29 +3,26 @@ import axios from 'axios';
 
 export default class EditTodo extends Component {
 
-    // Classic constructor + set default values
-    constructor(props) {
-        super(props);
+       /*
+        Removed Constructor and changed bindings to better notation
+        Instead of binding these functions, you can use the below notation for onChangeTodoDescription
+        */
+    onChangeTodoResponsible = (e) => this.setState({ todo_responsible: e.target.value });
+    onChangeTodoPriority = (e) => this.setState({ todo_priority: e.target.value });
+    onChangeTodoCompleted = (e) => this.setState({ todo_completed: e.target.value });
 
-        /*
-         Instead of binding these functions, you can use the below notation for onChangeTodoDescription
-         */
-        this.onChangeTodoResponsible = this.onChangeTodoResponsible.bind(this);
-        this.onChangeTodoPriority = this.onChangeTodoPriority.bind(this);
-        this.onChangeTodoCompleted = this.onChangeTodoCompleted.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
 
-        /*
-         Don't use snakecase in JavaScript. Use camelcase.
-         */
-        this.state = {
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
-        }
 
+    /*
+        Don't use snakecase in JavaScript. Use camelcase.
+        */
+    state = {
+        todo_description: '',
+        todo_responsible: '',
+        todo_priority: '',
+        todo_completed: false
     }
+
 
     // New Method - after mounting is a good time to request data from the backend
     componentDidMount() {
@@ -60,14 +57,27 @@ export default class EditTodo extends Component {
         });
     }
 
+    /*
+        Running into an issue I believe here, if not in setting the state.
+        Apparently in HTML the presence of "checked" in the state will always render a checked box.
+        Before I started incorporating Matt's changes the check box worked, now it will not uncheck/stay checked.
+
+    */
     onChangeTodoCompleted(e) {
         this.setState({
             todo_completed: !this.state.todo_completed
         });
     }
 
-    onSubmit(e) {
+    onSubmit = (e) => {
         e.preventDefault();
+
+        // Adding console loggin from create-todo to debug change in completion status
+        console.log(`Form Submitted:`);
+        console.log(`Todo Description: ${this.state.todo_description}`);
+        console.log(`Todo Responsible: ${this.state.todo_responsible}`);
+        console.log(`Todo Priority: ${this.state.todo_priority}`);
+        console.log(`Todo Completed: ${this.state.todo_completed}`);
 
         const obj = {
             todo_description: this.state.todo_description,
@@ -75,6 +85,7 @@ export default class EditTodo extends Component {
             todo_priority: this.state.todo_priority,
             todo_completed: this.state.todo_completed
         };
+
         /*
          Switched to PUT request
          */
@@ -161,4 +172,5 @@ export default class EditTodo extends Component {
             </div>
         )
     }
+
 }

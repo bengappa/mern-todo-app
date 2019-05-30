@@ -24,9 +24,7 @@ connection.once('open', function () {
 /* Implement the Router and attach Endpoints to the Server with Express
         * todoRoutes is an Express Router Object
         * Below we're attaching each endpoint
-*/
 
-/*
  In the world of RESTful conventions, the action you taking on a particular record is implied by the HTTP verb you're
  using. If you're POST'ing to /todos/, it is implied that you're making a new record. If you're PUT'ing to /todos/:id,
  it is implied that you're updating the record. This way you keep your URLs clear and standardized and the end user can
