@@ -6,7 +6,7 @@ import axios from 'axios';
 /*
  You can use "destructuring" in the function arguments to make this cleaner.
 
-Also used to be: 
+Also used to be:
     const Todo = props => (
 
  */
@@ -31,17 +31,7 @@ export default class TodosList extends Component {
 
     componentDidMount() {
         axios.get('http://localhost:4000/todos')
-            .then(response => {
-                this.setState({todos: response.data})
-            })
-            /*
-             Don't use the keyword 'function' in 2019. Just use the fat arrow notation like you're doing above.
-
-                    .catch(function (error) {
-                                    console.log(error);
-                                })
-
-             */
+            .then(response => this.setState({todos: response.data}))
             .then(error => console.log(error))
     }
 

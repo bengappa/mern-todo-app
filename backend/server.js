@@ -86,7 +86,7 @@ todoRoutes.route('/:id').put((req, res) => {
         todo.todo_responsible = req.body.todo_responsible;
         todo.todo_priority = req.body.todo_priority;
         todo.todo_completed = req.body.todo_completed;
-        
+
         todo.save().then(todo => {
                 res.json('Todo updated');
         })
@@ -128,6 +128,7 @@ Also, the original YouTube video I followed: https://www.youtube.com/watch?v=_02
 //            res.status(400).send('adding new todo failed');
 //        })
 //})
+*/
 
 
 app.use('/todos', todoRoutes);

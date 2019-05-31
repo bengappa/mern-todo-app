@@ -3,21 +3,6 @@ import axios from 'axios';
 
 export default class EditTodo extends Component {
 
-       /*
-        Removed Constructor and changed bindings to better notation
-        Instead of binding these functions, you can use the below notation for onChangeTodoDescription
-        */
-    onChangeTodoResponsible = (e) => this.setState({ todo_responsible: e.target.value });
-    onChangeTodoPriority = (e) => this.setState({ todo_priority: e.target.value });
-    onChangeTodoCompleted = (e) => this.setState({ todo_completed: e.target.value });
-
-
-
-    /*
-        Don't use snakecase in JavaScript. Use camelcase.
-        ^^
-        This one I'm not going to change but rather not use snakecase next time.
-        */
     state = {
         todo_description: '',
         todo_responsible: '',
@@ -25,50 +10,20 @@ export default class EditTodo extends Component {
         todo_completed: false
     }
 
+    onChangeTodoResponsible = (e) => this.setState({ todo_responsible: e.target.value });
+    onChangeTodoDescription = (e) => this.setState({ todo_description: e.target.value });
+    onChangeTodoPriority = (e) => this.setState({ todo_priority: e.target.value });
+    onChangeTodoCompleted = (e) => {
+        console.log('Hello world from EditTodo');
+        console.log(e.target.checked);
+        this.setState({ todo_completed: e.target.checked })
+    };
 
     // New Method - after mounting is a good time to request data from the backend
     componentDidMount() {
         axios.get('http://localhost:4000/todos/' + this.props.match.params.id)
-            .then(response => {
-                this.setState({
-                    todo_description: response.data.todo_description,
-                    todo_responsible: response.data.todo_responsible,
-                    todo_priority: response.data.todo_priority,
-                    todo_completed: response.data.todo_completed
-                })
-            })
-            .catch(function(error) {
-                console.log(error)
-        })
-    }
-
-    /*
-     Better notation for functions that need to access "this".
-     */
-    onChangeTodoDescription = (e) => this.setState({ todo_description: e.target.value });
-
-    onChangeTodoResponsible(e) {
-        this.setState({
-            todo_responsible: e.target.value
-        });
-    }
-
-    onChangeTodoPriority(e) {
-        this.setState({
-            todo_priority: e.target.value
-        });
-    }
-
-    /*
-        Running into an issue I believe here, if not in setting the state.
-        Apparently in HTML the presence of "checked" in the state will always render a checked box.
-        Before I started incorporating Matt's changes the check box worked, now it will not uncheck/stay checked.
-
-    */
-    onChangeTodoCompleted(e) {
-        this.setState({
-            todo_completed: !this.state.todo_completed
-        });
+            .then(response => this.setState(response.data))
+            .catch((error) => console.log(error));
     }
 
     onSubmit = (e) => {
@@ -159,7 +114,6 @@ export default class EditTodo extends Component {
                                 name="completedCheckbox"
                                 onChange={this.onChangeTodoCompleted}
                                 checked={this.state.todo_completed}
-                                value={this.state.todo_completed}
                                 />
                             <label className="form-check-label" htmlFor="completedCheckbox">
                                 Completed
