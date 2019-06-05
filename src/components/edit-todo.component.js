@@ -96,6 +96,16 @@ export default class EditTodo extends Component {
 
     }
 
+    onDelete = (e) => {
+        e.preventDefault();
+
+        console.log(`Delete button clicked`);
+
+        axios.delete('http://localhost:4000/todos/' + this.props.match.params.id)
+            .then(() => this.props.history.push('/'))
+
+    }
+
     // JSX Output
     render() {
         return (
@@ -166,8 +176,12 @@ export default class EditTodo extends Component {
                             </label>
                         </div>
                         <br/>
+                        <hr/>
                         <div className="form-group">
                             <input type="submit" value="Update Todo" className="btn btn-primary" />
+                        </div>
+                        <div className="form-group">
+                            <input type="button" id="deleteButton" onClick={this.onDelete} value="Delete Todo" className="btn btn-primary" />
                         </div>
                     </div>
                 </form>

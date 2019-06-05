@@ -55,9 +55,10 @@ todoRoutes.route('/:id').get((req, res) => {
  This should just be POST /todos/
         ^^
         Tried changing this but ran into some difficulties
+        6/5 - trying again
 
  */
-todoRoutes.route('/add').post((req, res) => {
+todoRoutes.route('/todos/').post((req, res) => {
     let todo = new Todo(req.body);
     todo.save()
         .then(todo => {
@@ -72,7 +73,7 @@ todoRoutes.route('/add').post((req, res) => {
 /*
  Changed to a PUT /todos/:id to follow convention.
  */
-todoRoutes.route('/:id').put((req, res) => {
+todoRoutes.route('/todos/:id').put((req, res) => {
     Todo.findById(req.params.id, (err, todo) => {
         /*
          One of the greatest, simplest tricks to cleaning up code in any language it the "early return".
@@ -107,27 +108,21 @@ todoRoutes.route('/:id').put((req, res) => {
 
 Read this: https://github.com/axios/axios/issues/897
 Also, the original YouTube video I followed: https://www.youtube.com/watch?v=_02zK1D4brk&list=PLQeNPM60ruK6K2QnBSz2osXrv7sDv2QUi&index=3&t=0s
-
-/*
-
-//todoRoutes.route('/:id').delete((req, res) => {
-
-//    // Adding early return
-//    if (!todo) {
-//        res.status(404).send('data is not found');
-//        return;
-//    }
+*/
 
 
-//    let todo = new Todo(req.body);
-//    todo.save()
-//        .then(todo => {
-//            res.status(200).json({ 'todo': 'todo added successfully' });
-//        })
-//        .catch(err => {
-//            res.status(400).send('adding new todo failed');
-//        })
-//})
+todoRoutes.route('/:id').delete((req, res) => {
+    // Adding early return
+    if (!todo) {
+        res.status(404).send('data is not found');
+        return;
+    }
+
+    let id = req.params.id;
+    Todo.findById(id, (err, todo) => {
+        res.json(todo);
+    });
+});
 
 
 app.use('/todos', todoRoutes);
